@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./index.js">
+    <title>Document</title>
+</head>
+
+<body>
+    <header>
+        <h1>World Scramble Game</h1>
+    </header>
+    <section>
+        <div class="game">
+            <h3 class="msg"></h3>
+            <h3 class="hint"></h3>
+            <input id="input" type="text" class="hidden">
+            <button id="btn">Start Game</button>
+        </div>
+    </section>
+    <script>
+        // document.getElementById('input').style.display = "block";
+        const msg = document.querySelector('.msg');
+        const guess = document.querySelector('input');
+        const btn = document.querySelector('#btn');
+        let hint = document.querySelector('.hint');
+        let play = false;
+        let word = ['love', 'sympathy', 'honesty', 'kindness', 'empathy', 'sorrow', 'hurt', 'feeling', 'emotion', 'romance', 'bromance', 'smart', 'handsome', 'pretty', 'beautiful', 'nice', 'hug', 'hot', 'happy', 'sad', 'lonely', 'alone', 'single', 'committed'];
+        let tempword = "";
+        let scramble = " ";
+        const HINT = (arr) => {
+            console.log(arr)
+            let wo = [];
+            for (let i = 0; i < arr.length; i++) {
+
+                if (i == 0 || i == (arr.length - 1)) {
+                    wo[i] = arr[i]
+                }
+                else {
+                    wo[i] = ' _ ';
+                }
+
+            }
+
+            return wo.join("");
+        }
+        const createword = () => {
+
+            let num = Math.floor(Math.random() * word.length)
+            // console.log(word[num]);
+            return word[num];
+        }
+        const scrambleword = (array) => {
+            // console.log(arr);
+            for (let i = 0; i < array.length; i++) {
+                const element = array[i];
+                let ti = Math.floor(Math.random() * array.length)
+                array[i] = array[ti];
+                array[ti] = element;
+            }
+            return (array.join(""))
+        }
+        btn.addEventListener('click', () => {
+            if (!play) {
+                play = true;
+                btn.innerHTML = "Guess";
+                play = true;
+                guess.classList.toggle('hidden')
+                tempword = createword();
+                scramble = scrambleword(tempword.split(""));
+                msg.innerHTML = `Guess the word : ${scramble}`;
+                hint.innerHTML = `Hint :  ${HINT(tempword.split(""))}`;
+                // console.log(tempword);
+                // console.log(scramble);
+            }
+            else {
+
+                let gword = guess.value;
+
+                if (gword == tempword) {
+                    play = false;
+                    guess.classList.toggle('hidden')
+                    msg.innerHTML = `🎆🎆 NICE! YOU GOT THE CORRECT WORD  : ${tempword} `;
+                    guess.value = "";
+                    btn.innerHTML = "NEXT WORD"
+                    hint.innerHTML = "";
+                }
+                else {
+                    msg.innerHTML = `TRY AGAIN : ${scramble}`;
+                    guess.value = "";
+                }
+
+            }
+
+        })
+    </script>
+</body>
+
+</html>
